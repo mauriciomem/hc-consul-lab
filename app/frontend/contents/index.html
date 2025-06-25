@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Ensure the page is responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Happy Paws Vet </title>
+  <style>
+    /* Base styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #ffffff;
+      color: #333333;
+    }
+
+    /* Container for responsive layout on smaller screens (including 13" screens) */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    /* Titles using the new primary color */
+    h1, h2 {
+      color: #DC477D;
+      margin-bottom: 15px;
+    }
+
+    .status-button {
+      background-color: #DC477D;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .status-button:hover {
+      background-color: #b44167;
+    }
+
+    /* Section styling */
+    section {
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    /* Form elements styling */
+    input, select, button {
+      margin: 5px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #DC477D;
+      box-shadow: 0 0 5px rgba(220, 71, 125, 0.5);
+    }
+
+    /* Button styling using the new primary color */
+    button {
+      cursor: pointer;
+      background-color: #DC477D;
+      color: #fff;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #b44167; /* Slightly darker shade on hover */
+    }
+
+    /* Pet list grid: two columns per row with a gap between items */
+    #petsList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      padding: 0;
+      list-style: none;  /* Erase default list bullets */
+    }
+
+    .pet-item {
+      background-color: #ffffff;
+      padding: 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <h1>🐾 Happy Paws Vet 🐾</h1>
+      <a href="status.html" class="status-button">Status Page</a>
+    </div>
+
+    <!-- Section for filtering pets -->
+    <section>
+      <h2>🐱 Filter Pets</h2>
+      <button id="loadAll">Load All Pets</button>
+      <button id="loadCats">Show Cats</button>
+      <button id="loadDogs">Show Dogs</button>
+    </section>
+
+    <!-- Section displaying the list of pets in a two-column grid -->
+    <section>
+      <h2>📋 Pets List</h2>
+      <ul id="petsList"></ul>
+    </section>
+
+    <!-- Section for updating an existing pet -->
+    <section id="updateSection" style="display: none;">
+      <h2>✏️ Update Pet</h2>
+      <form id="updatePetForm">
+        <input type="hidden" id="updatePetId" />
+        <input type="text" id="updateName" placeholder="Name" required />
+        <input type="text" id="updateSpecies" placeholder="Species (cat, dog, etc.)" required />
+        <input type="number" id="updateAge" placeholder="Age" required />
+        <input type="text" id="updateBreed" placeholder="Breed (optional)" />
+        <input type="text" id="updateGuardian" placeholder="Guardian" required />
+        <button type="submit">Update Pet</button>
+        <button type="button" id="cancelUpdate">Cancel</button>
+      </form>
+    </section>
+
+    <!-- Section for adding a new pet -->
+    <section>
+      <h2>🐶 Add a New Pet</h2>
+      <form id="addPetForm">
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="text" id="species" placeholder="Species (cat, dog, etc.)" required />
+        <input type="number" id="age" placeholder="Age" required />
+        <input type="text" id="breed" placeholder="Breed (optional)" />
+        <input type="text" id="guardian" placeholder="Guardian" required />
+        <button type="submit">Add Pet</button>
+      </form>
+    </section>
+  </div>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

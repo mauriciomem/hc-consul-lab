@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: petdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      consul-servers_consul-nw:
+        ipv4_address: 10.100.10.10
+
+  api:
+    build: ./api
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: petdb
+      POSTGRES_HOST: db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      consul-servers_consul-nw:
+        ipv4_address: 10.100.10.11
+
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        API_BASE_URL: http://localhost:8000
+        HASHI_PRODUCT: consul
+        HASHI_VERSION: 1.21.0
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      consul-servers_consul-nw:
+        ipv4_address: 10.100.10.12
+
+volumes:
+  db_data:
+
+networks:
+  consul-servers_consul-nw:
+    external: true

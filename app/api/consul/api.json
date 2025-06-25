@@ -1,0 +1,17 @@
+{
+  "node_name" : "api-server-01",
+  "Service": {
+    "Name": "api-server",
+    "id": "api-server-01",
+    "tags": ["v0.0.1", "lab"],
+    "check": {
+            "id": "api",
+            "name": "check api on port 8000",
+            "http": "http://10.100.10.20:8000/health",
+            "disable_redirects": true,
+            "method": "GET",
+            "interval": "10s",
+            "timeout": "30s"
+        }
+    }
+}

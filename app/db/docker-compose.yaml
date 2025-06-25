@@ -1,0 +1,32 @@
+services:
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: petdb
+    depends_on:
+      - consul-cli
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    network_mode: "service:consul-cli" # Use consul-cli's network stack
+
+  consul-cli:
+      image: hashicorp/consul:1.21
+      hostname: db-server-01
+      restart: always
+      volumes:
+        - ./consul/:/etc/consul.d/config/:ro
+        - ./consul/tmp-data/cli:/opt/consul/data
+      command: "consul agent -config-dir=/etc/consul.d/config/"
+      networks:
+        consul-servers_consul-nw:
+          ipv4_address: 10.100.10.30
+
+volumes:
+  db_data:
+
+networks:
+  consul-servers_consul-nw:
+    external: true

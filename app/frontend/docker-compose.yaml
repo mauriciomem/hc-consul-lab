@@ -1,0 +1,30 @@
+services:
+
+  frontend:
+    build: 
+      context: .
+      args:
+        API_BASE_URL: http://localhost:8000
+        HASHI_PRODUCT: consul
+        HASHI_VERSION: 1.21.0
+    depends_on:
+      - consul-client
+    network_mode: "service:consul-client" # Use consul-client's network stack
+
+  consul-client:
+      image: hashicorp/consul:1.21
+      hostname: web-server-01
+      restart: always
+      volumes:
+        - ./consul/:/etc/consul.d/config/:ro
+        - ./consul/tmp-data/cli:/opt/consul/data
+      command: "consul agent -config-dir=/etc/consul.d/config/"
+      ports:
+        - "80:80"
+      networks:
+        consul-servers_consul-nw:
+          ipv4_address: 10.100.10.40
+
+networks:
+  consul-servers_consul-nw:
+    external: true

@@ -1,0 +1,20 @@
+alive: web-server-01 10.100.10.40:8301
+alive: consul-srv-1 10.100.0.11:8301
+clock: 24
+alive: consul-srv-3 10.100.0.13:8301
+alive: api-server-01 10.100.10.20:8301
+alive: consul-srv-2 10.100.0.12:8301
+alive: db-server-01 10.100.10.30:8301
+clock: 25
+leave
+clock: 26
+alive: web-server-01 10.100.10.40:8301
+alive: consul-srv-1 10.100.0.11:8301
+clock: 29
+alive: api-server-01 10.100.10.20:8301
+alive: consul-srv-2 10.100.0.12:8301
+alive: db-server-01 10.100.10.30:8301
+alive: consul-srv-3 10.100.0.13:8301
+clock: 30
+leave
+clock: 31

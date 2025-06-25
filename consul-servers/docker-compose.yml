@@ -1,0 +1,88 @@
+
+services:
+    consul-srv-1:
+        image: hashicorp/consul:1.21
+        container_name: consul-srv-1
+        hostname: consul-srv-1
+        restart: always
+        volumes:
+        - ./config/servers/config-servers.hcl:/etc/consul.d/config-servers.hcl:ro
+        - ./data/srv-1:/opt/consul/data
+        networks:
+            consul-nw:
+                ipv4_address: 10.100.0.11
+        ports:
+        - "8501:8500"     # HTTP
+        - "8601:8600/udp" # DNS
+        - "54:53"
+        dns:
+        - 10.100.0.11 # Consul Server DNS name
+        - 1.1.1.1   # Cloudflare Public DNS
+        command: "consul agent -config-dir=/etc/consul.d"
+
+    consul-srv-2:
+        image: hashicorp/consul:1.21
+        container_name: consul-srv-2
+        hostname: consul-srv-2
+        restart: always
+        volumes:
+        - ./config/servers/config-servers.hcl:/etc/consul.d/config-servers.hcl:ro
+        - ./data/srv-2:/opt/consul/data
+        networks:
+            consul-nw:
+                ipv4_address: 10.100.0.12
+        ports:
+        - "8502:8500"     # HTTP
+        - "8602:8600/udp" # DNS
+        - "55:53"
+        dns:
+        - 10.100.0.12 # Consul Server DNS name
+        - 1.1.1.1  # Cloudflare Public DNS
+        command: "consul agent -config-dir=/etc/consul.d"
+    
+    consul-srv-3:
+        image: hashicorp/consul:1.21
+        container_name: consul-srv-3
+        hostname: consul-srv-3
+        restart: always
+        volumes:
+        - ./config/servers/config-servers.hcl:/etc/consul.d/config-servers.hcl:ro
+        - ./data/srv-3:/opt/consul/data
+        networks:
+            consul-nw:
+                ipv4_address: 10.100.0.13
+        ports:
+        - "8503:8500"     # HTTP
+        - "8603:8600/udp" # DNS
+        - "56:53"
+        dns:
+        - 10.100.0.13 # Consul Server DNS name
+        - 1.1.1.1  # Cloudflare Public DNS
+        command: "consul agent -config-dir=/etc/consul.d"
+    
+    ### Run a container registered as service in consul
+    # docker run --network=consul-from-scratch_consul-nw --name web-server-01 --ip 10.100.0.15 -p 8080:80 -d httpd:2.4
+    # dig @10.100.0.14 -p 8600 front-end-web.service.consul
+    # Example service configuration:
+    #     {
+    #   "node_name" : "web-server-01",
+    #   "Service": {
+    #     "Name": "front-end-web",
+    #     "id": "web-server-01",
+    #     "tags": ["v0.0.1", "lab"],
+    #     "check": {
+    #             "id": "web",
+    #             "name": "check web on port 80",
+    #             "tcp": "10.100.0.15:80",
+    #             "interval": "10s",
+    #             "timeout": "30s"
+    #         }
+    #     }
+    # }
+
+networks:
+  consul-nw:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.100.0.0/16

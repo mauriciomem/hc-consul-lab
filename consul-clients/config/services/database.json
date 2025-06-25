@@ -1,0 +1,15 @@
+{
+  "node_name" : "db-server-01",
+  "Service": {
+    "Name": "db-server",
+    "id": "db-server-01",
+    "tags": ["v0.0.1", "lab"],
+    "check": {
+            "id": "db",
+            "name": "check web on port 5432",
+            "tcp": "10.100.10.10:5432",
+            "interval": "10s",
+            "timeout": "30s"
+        }
+    }
+}

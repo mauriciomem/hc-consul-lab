@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status Page - Pets API</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #DC477D;
+      margin-bottom: 20px;
+    }
+    .status-container {
+      border: 2px solid #7B42BC;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #f9f9f9;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .light {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: red; /* default red */
+    }
+    .light.online {
+      background-color: green;
+    }
+    .status-text {
+      text-align: left;
+    }
+    .status-title {
+      font-weight: bold;
+      color: #7B42BC;
+      display: block;
+    }
+    .status-msg {
+      font-style: italic;
+      color: #02A8EF; /* online color */
+    }
+    /* When an element is offline, override message color */
+    .offline {
+      color: #FFCF25 !important;
+    }
+    /* Return button styling */
+    .return-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .return-button {
+      background-color: #DC477D;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+    .return-button:hover {
+      background-color: #b44167;
+    }
+  </style>
+</head>
+<body>
+  <h1>System Status</h1>
+  <div class="status-container">
+    <!-- Frontend status: since this page loaded, it's online -->
+    <div class="status-item">
+      <div id="frontendLight" class="light online"></div>
+      <div class="status-text">
+        <span class="status-title">Frontend</span>
+        <span id="frontendMsg" class="status-msg">Page loaded successfully.</span>
+      </div>
+    </div>
+    <!-- API status: will be updated via JavaScript -->
+    <div class="status-item">
+      <div id="apiLight" class="light"></div>
+      <div class="status-text">
+        <span class="status-title">API</span>
+        <span id="apiMsg" class="status-msg">Checking API status...</span>
+      </div>
+    </div>
+    <!-- Database status: will be updated via JavaScript -->
+    <div class="status-item">
+      <div id="databaseLight" class="light"></div>
+      <div class="status-text">
+        <span class="status-title">Database</span>
+        <span id="databaseMsg" class="status-msg">Checking database connection...</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Return to Main App Button -->
+  <div class="return-container">
+    <a href="index.html" class="return-button">Return to Main App</a>
+  </div>
+  <script src="config.js"></script>
+  <script>
+    // Check API health by calling the /health endpoint
+    async function checkHealth() {
+      try {
+
+        const apiBaseUrl = window.env.apiBaseUrl;
+        const response = await fetch(`${apiBaseUrl}/health`);
+        if (!response.ok) {
+          throw new Error("API health endpoint error");
+        }
+        const data = await response.json();
+        console.log("Health data received:", data);
+
+        // Update API status indicator and message
+        if (data.api === "online") {
+          document.getElementById("apiLight").classList.add("online");
+          document.getElementById("apiMsg").textContent = "API is operational.";
+          document.getElementById("apiMsg").classList.remove("offline");
+        } else {
+          document.getElementById("apiLight").classList.remove("online");
+          document.getElementById("apiMsg").textContent = "API connection failed.";
+          document.getElementById("apiMsg").classList.add("offline");
+        }
+
+        // Update Database status indicator and message
+        if (data.database === "online") {
+          document.getElementById("databaseLight").classList.add("online");
+          document.getElementById("databaseMsg").textContent = "Database is connected.";
+          document.getElementById("databaseMsg").classList.remove("offline");
+        } else {
+          document.getElementById("databaseLight").classList.remove("online");
+          document.getElementById("databaseMsg").textContent = "Database is offline.";
+          document.getElementById("databaseMsg").classList.add("offline");
+        }
+      } catch (error) {
+        document.getElementById("apiLight").classList.remove("online");
+        document.getElementById("databaseLight").classList.remove("online");
+        document.getElementById("apiMsg").textContent = "API connection failed.";
+        document.getElementById("apiMsg").classList.add("offline");
+        document.getElementById("databaseMsg").textContent = "Database is offline.";
+        document.getElementById("databaseMsg").classList.add("offline");
+        console.error("Error fetching health status:", error);
+      }
+    }
+
+    // Run the health check when the page loads
+    checkHealth();
+  </script>
+</body>
+</html>

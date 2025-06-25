@@ -1,0 +1,25 @@
+services:
+
+  # consul-kv:
+  #   image: hashicorp/consul:1.21
+  #   container_name: consul-bootstrap
+  #   hostname: consul-bootstrap
+  #   restart: "no"
+  #   command: "consul kv put -recurse consul/kv/consul-clients/consul-bootstrap true"
+
+  consul-cli:
+      image: hashicorp/consul:1.21
+      container_name: consul-cli
+      hostname: consul-cli
+      restart: always
+      volumes:
+        - ./config/clients/:/etc/consul.d/config/:ro
+        - ./config/services/:/etc/consul.d/services/:ro
+        - ./data/cli:/opt/consul/data
+      command: "consul agent -config-dir=/etc/consul.d/config/ -config-dir=/etc/consul.d/services/"
+      networks:
+        - consul-servers_consul-nw
+
+networks:
+  consul-servers_consul-nw:
+    external: true
