@@ -6,9 +6,15 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: petdb
-      POSTGRES_HOST: db
     depends_on:
       - consul-client
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
     network_mode: "service:consul-client" # Use consul-client's network stack
 
   consul-client:
