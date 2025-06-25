@@ -1,12 +1,5 @@
 services:
 
-  # consul-kv:
-  #   image: hashicorp/consul:1.21
-  #   container_name: consul-bootstrap
-  #   hostname: consul-bootstrap
-  #   restart: "no"
-  #   command: "consul kv put -recurse consul/kv/consul-clients/consul-bootstrap true"
-
   consul-cli:
       image: hashicorp/consul:1.21
       container_name: consul-cli
