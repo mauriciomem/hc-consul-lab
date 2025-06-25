@@ -38,3 +38,4 @@ $ consul leave
 $ systemctl stop consul
 
 # hc-consul-lab
+# hc-consul-lab
