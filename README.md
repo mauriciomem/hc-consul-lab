@@ -1,10 +1,8 @@
-
-### start compose
-
+# hc-consul-lab
 
 ### check cluster status
 
-
+```
 > consul members
 Node           Address           Status  Type    Build   Protocol  DC         Partition  Segment
 consul-srv-1   10.100.0.11:8301  alive   server  1.20.6  2         dc-docker  default    <all>
@@ -24,18 +22,4 @@ consul-srv-1   10.100.0.11:8301  alive   server  1.20.6  2         dc-docker  de
 consul-srv-2   10.100.0.12:8301  alive   server  1.20.6  2         dc-docker  default    <all>
 consul-srv-3   10.100.0.13:8301  alive   server  1.20.6  2         dc-docker  default    <all>
 web-server-01  10.100.0.14:8301  alive   client  1.20.6  2         dc-docker  default    <default>
-
-
-
-let consul agents start knowing each other, the gossip communication will propagate the updated membership state across the cluster
-https://developer.hashicorp.com/consul/commands/join
-
-> consul join [node name] [node name] [node name]
-
-permanently removing the node
-
-$ consul leave
-$ systemctl stop consul
-
-# hc-consul-lab
-# hc-consul-lab
+```
